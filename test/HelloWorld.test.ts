@@ -5,7 +5,7 @@ import greet from '../build/HelloWorld.json';
 
 use(solidity);
 
-describe("Contract", () => {
+describe("Hello World", () => {
     const [wallet] = new MockProvider().getWallets();
     let HelloWorld: Contract;
 

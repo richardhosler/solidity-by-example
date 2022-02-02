@@ -5,7 +5,7 @@ import contract from '../build/FirstApp.json';
 
 use(solidity);
 
-describe("Contract", () => {
+describe("First App", () => {
     const [wallet] = new MockProvider().getWallets();
     let FirstApp: Contract;
 
