@@ -43,8 +43,8 @@ contract Primitives {
      The term bytes in Solidity represents a dynamic array of bytes. 
      It’s a shorthand for byte[] .
     */
-    bytes1 a = 0xb5; //  [10110101]
-    bytes1 b = 0x56; //  [01010110]
+    bytes1 public a = 0xb5; //  [10110101]
+    bytes1 public b = 0x56; //  [01010110]
 
     // Default values
     // Unassigned variables have a default value

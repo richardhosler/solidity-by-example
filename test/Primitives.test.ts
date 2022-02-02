@@ -41,10 +41,10 @@ describe("Primitive Types", () => {
             expect(await Primitives.addr()).to.be.properAddress;
         });
         it("is byte a == 10110101", async () => {
-            expect(await Primitives.a()).to.equal(0xb5);
+            expect(Number(await Primitives.a())).to.equal(0xb5);
         });
         it("is byte b == 01010110", async () => {
-            expect(await Primitives.b()).to.equal(0x56);
+            expect(Number(await Primitives.b())).to.equal(0x56);
         });
     });
     describe("Uninitialised values", async () => {
