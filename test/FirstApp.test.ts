@@ -1,7 +1,7 @@
 import { expect, use } from 'chai';
 import { Contract } from 'ethers';
 import { deployContract, MockProvider, solidity } from 'ethereum-waffle';
-import contract from '../build/FirstApp.json';
+import firstAppContract from '../build/FirstApp.json';
 
 use(solidity);
 
@@ -10,7 +10,7 @@ describe("First App", () => {
     let FirstApp: Contract;
 
     beforeEach(async () => {
-        FirstApp = await deployContract(wallet, contract);
+        FirstApp = await deployContract(wallet, firstAppContract);
     });
 
     it("FirstApp is deployed on signer address", async () => {

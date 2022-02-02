@@ -1,7 +1,7 @@
 import { expect, use } from 'chai';
 import { BigNumber, Contract } from 'ethers';
 import { deployContract, MockProvider, solidity } from 'ethereum-waffle';
-import contract from '../build/Primitives.json';
+import primitivesContract from '../build/Primitives.json';
 
 use(solidity);
 
@@ -10,7 +10,7 @@ describe("Primitive Types", () => {
     let Primitives: Contract;
 
     beforeEach(async () => {
-        Primitives = await deployContract(wallet, contract);
+        Primitives = await deployContract(wallet, primitivesContract);
     });
     it("Primitives is deployed on signer address", async () => {
         expect(await Primitives.signer.getAddress()).to.equal(wallet.address);

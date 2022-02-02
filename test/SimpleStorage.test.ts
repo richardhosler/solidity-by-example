@@ -1,7 +1,7 @@
 import { expect, use } from 'chai';
 import { Contract } from 'ethers';
 import { deployContract, MockProvider, solidity } from 'ethereum-waffle';
-import contract from '../build/SimpleStorage.json';
+import simpleStorageContract from '../build/SimpleStorage.json';
 
 use(solidity);
 
@@ -10,7 +10,7 @@ describe("Simple Storage", () => {
     let SimpleStorage: Contract;
 
     beforeEach(async () => {
-        SimpleStorage = await deployContract(wallet, contract);
+        SimpleStorage = await deployContract(wallet, simpleStorageContract);
     });
     it("SimpleStorage is deployed on signer address", async () => {
         expect(await SimpleStorage.signer.getAddress()).to.equal(wallet.address);
