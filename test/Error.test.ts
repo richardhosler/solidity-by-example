@@ -1,7 +1,7 @@
 import { expect, use } from 'chai';
 import { Contract } from 'ethers';
 import { deployContract, MockProvider, solidity } from 'ethereum-waffle';
-import ErrorContract from '../build/HelloWorld.json';
+import ErrorContract from '../build/Error.json';
 
 use(solidity);
 
