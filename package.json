@@ -1,9 +1,10 @@
 {
-  "name": "solidity-boilerplate",
+  "name": "solidity-by-example-tests",
   "version": "0.0.1",
-  "description": "Boilerplate code for creating a solidity project, with an example project.",
+  "description": "Testing the Solidity By Example contracts.",
   "main": "index.js",
   "scripts": {
+    "fix": "npx yarn-audit-fix",
     "clean": "npx hardhat clean",
     "chain": "npx hardhat node",
     "build": "waffle",
@@ -38,6 +39,7 @@
     "solidity-coverage": "^0.7.18",
     "ts-node": "^10.4.0",
     "typechain": "^7.0.0",
-    "typescript": "^4.5.4"
+    "typescript": "^4.5.4",
+    "yarn-audit-fix": "^9.0.10"
   }
 }
