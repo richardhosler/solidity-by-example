@@ -27,11 +27,6 @@ describe("Array", () => {
         await Array.push(42);
         expect(await Array.get(0)).to.equal(42);
     });
-    it("can create a memory only array", async () => {
-        const arr = await Array.examples();
-        console.log(arr);
-
-    })
     describe("testing multiple values", async () => {
         beforeEach(async () => {
             await Array.push(4);
