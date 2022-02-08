@@ -19,12 +19,12 @@ describe("Hello World", () => {
     });
     it("Contracts are deployed on signer address", async () => {
         expect(await caller.signer.getAddress()).to.equal(wallet.address);
-        expect(await receiver.signer.getAddress()).to.equal(wallet.address);
+        expect(await receiver.mock.signer.getAddress.returns(wallet.address));
     });
     it("call to foo succeeds", async () => {
         await expect(await caller.testCallFoo(wallet.address, { value: BigInt(500) }))
             .to.emit(caller, "Response").withArgs(true, "0x")
-        // .and.to.emit(receiver, "Received");
+            .and.to.emit(receiver, "Received");
     });
     it("call to doesNotExist calls fallback", async () => {
         await expect(await caller.testCallDoesNotExist(wallet.address)).to.emit(caller, "Response");
