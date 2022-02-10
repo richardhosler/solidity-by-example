@@ -1,8 +1,9 @@
 import { expect, use } from 'chai';
-import { BigNumber, Contract } from 'ethers';
+import { BigNumber, Contract, Signer } from 'ethers';
 import { deployContract, MockProvider, solidity } from 'ethereum-waffle';
 import MultiSigContract from '../build/MultiSigWallet.json';
 import { ECDH } from 'crypto';
+import exp from 'constants';
 
 use(solidity);
 
@@ -56,20 +57,39 @@ describe("MultiSig Wallet", () => {
         it("getTransactionCount returns correct count of transactions", async () => {
             expect(await MultiSig.getTransactionCount()).to.equal(3);
         });
-        it("can confirm a transaction", async () => {
-            await expect(await MultiSig.confirmTransaction(0))
-                .to.emit(MultiSig, "ConfirmTransaction");
-        });
         it("can return a requested transaction", async () => {
-            await expect(await MultiSig.getTransaction(1)).to.deep.equal(
+            expect(await MultiSig.getTransaction(1)).to.deep.equal(
                 [
                     '0x63FC2aD3d021a4D7e64323529a55a9442C444dA0',
                     BigNumber.from(500),
                     '0x424242',
                     false,
                     BigNumber.from(0)
-                ]);
+                ]
+            );
         });
-        it("can revoke a confirmation");
+        it("can confirm a transaction", async () => {
+            await expect(await MultiSig.confirmTransaction(1))
+                .to.emit(MultiSig, "ConfirmTransaction");
+            await expect(await MultiSig.connect(wallet2).confirmTransaction(1))
+                .to.emit(MultiSig, "ConfirmTransaction");
+            await expect(await MultiSig.connect(wallet1).confirmTransaction(1))
+                .to.be.reverted;
+            expect(await MultiSig.getTransaction(1)).to.deep.equal(
+                [
+                    '0x63FC2aD3d021a4D7e64323529a55a9442C444dA0',
+                    BigNumber.from(500),
+                    '0x424242',
+                    false,
+                    BigNumber.from(2)
+                ]
+            );
+        });
+        it.skip("can execute a transaction", async () => {
+
+        });
+        it.skip("can revoke a confirmation", async () => {
+
+        });
     })
 });
