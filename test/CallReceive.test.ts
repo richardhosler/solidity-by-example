@@ -6,7 +6,7 @@ import ReceiverContract from '../build/Receiver.json'
 
 use(solidity);
 
-describe("Hello World", () => {
+describe("Call and Receive", () => {
     let wallet: Wallet;
     let walletB: Wallet;
     let caller: Contract;
@@ -15,14 +15,14 @@ describe("Hello World", () => {
     beforeEach(async () => {
         [wallet, walletB] = new MockProvider().getWallets();
         caller = await deployContract(wallet, CallerContract);
-        receiver = await deployMockContract(wallet, ReceiverContract.abi);
+        receiver = await deployContract(wallet, ReceiverContract);
     });
     it("Contracts are deployed on signer address", async () => {
         expect(await caller.signer.getAddress()).to.equal(wallet.address);
-        expect(await receiver.mock.signer.getAddress.returns(wallet.address));
+        expect(await receiver.signer.getAddress()).to.equal(wallet.address);
     });
     it("call to foo succeeds", async () => {
-        await expect(await caller.testCallFoo(wallet.address, { value: BigInt(500) }))
+        await expect(caller.testCallFoo(wallet.address, { value: BigInt(500) }))
             .to.emit(caller, "Response").withArgs(true, "0x")
             .and.to.emit(receiver, "Received");
     });
