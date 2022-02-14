@@ -60,7 +60,7 @@ describe("MultiSig Wallet", () => {
         it("can return a requested transaction", async () => {
             expect(await MultiSig.getTransaction(1)).to.deep.equal(
                 [
-                    '0x63FC2aD3d021a4D7e64323529a55a9442C444dA0',
+                    wallet2.address,
                     BigNumber.from(500),
                     '0x424242',
                     false,
@@ -68,12 +68,15 @@ describe("MultiSig Wallet", () => {
                 ]
             );
         });
+        it("reverts when transaction not found", async () => {
+            await expect(MultiSig.getTransaction(4)).to.be.reverted;
+        })
         it("can confirm a transaction", async () => {
             await expect(await MultiSig.confirmTransaction(1))
                 .to.emit(MultiSig, "ConfirmTransaction");
             await expect(await MultiSig.connect(wallet2).confirmTransaction(1))
                 .to.emit(MultiSig, "ConfirmTransaction");
-            await expect(await MultiSig.connect(wallet1).confirmTransaction(1))
+            await expect(MultiSig.connect(wallet1).confirmTransaction(1))
                 .to.be.reverted;
             expect(await MultiSig.getTransaction(1)).to.deep.equal(
                 [
@@ -85,11 +88,24 @@ describe("MultiSig Wallet", () => {
                 ]
             );
         });
-        it.skip("can execute a transaction", async () => {
-
+        it("can execute a transaction", async () => {
+            await wallet1.sendTransaction({
+                to: MultiSig.address,
+                value: BigInt(2) * (BigInt(10) ** BigInt(18))
+            });
+            await MultiSig.confirmTransaction(1);
+            await MultiSig.connect(wallet2).confirmTransaction(1);
+            await expect(await MultiSig.executeTransaction(1))
+                .to.emit(MultiSig, "ExecuteTransaction");
         });
-        it.skip("can revoke a confirmation", async () => {
-
+        it("will not execute an unconfirmed transaction", async () => {
+            await expect(MultiSig.executeTransaction(1)).to.be.reverted;
+        })
+        it("can revoke a confirmation", async () => {
+            await MultiSig.confirmTransaction(1);
+            await MultiSig.connect(wallet2).confirmTransaction(1);
+            await expect(await MultiSig.revokeConfirmation(1)).to.emit(MultiSig, "RevokeConfirmation");
+            await expect(MultiSig.executeTransaction(1)).to.be.reverted;
         });
     })
 });
