@@ -7,12 +7,10 @@ use(solidity);
 
 describe("Merkle Proof", () => {
     const [wallet] = new MockProvider().getWallets();
-    let MerkleProof: Contract;
     let MerkleTest: Contract;
 
     beforeEach(async () => {
         MerkleTest = await deployContract(wallet, MerkleTestContract);
-
     });
 
     it("Merkle Proof is deployed on signer address", async () => {
