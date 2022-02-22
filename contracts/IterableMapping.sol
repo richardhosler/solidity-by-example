@@ -58,6 +58,7 @@ library IterableMapping {
 }
 
 contract TestIterableMap {
+    event testsPassed(bool pass);
     using IterableMapping for IterableMapping.Map;
 
     IterableMapping.Map private map;
@@ -82,5 +83,6 @@ contract TestIterableMap {
         assert(map.getKeyAtIndex(0) == address(0));
         assert(map.getKeyAtIndex(1) == address(3));
         assert(map.getKeyAtIndex(2) == address(2));
+        emit testsPassed(true);
     }
 }

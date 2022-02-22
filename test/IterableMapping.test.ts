@@ -11,14 +11,14 @@ describe("Iterable Mapping", () => {
     let IterableMapping: Contract;
     let TestIterableMapping: Contract;
 
-    beforeEach(async () => {
+    before(async () => {
         IterableMapping = await deployContract(wallet, IterableMappingContract);
-        TestIterableMapping = await deployContract(wallet, TestIterableMappingContract, [IterableMapping.address]);
+        TestIterableMapping = await deployContract(wallet, TestIterableMappingContract);
     });
     it("Iterable Mapping is deployed on signer address", async () => {
         expect(await TestIterableMapping.signer.getAddress()).to.equal(wallet.address);
     });
-    it.skip("run test", async () => {
+    it("test contract should emit testPassed event", async () => {
         expect(await TestIterableMapping.testIterableMap()).to.emit(TestIterableMapping, "testsPassed");
     });
 });
