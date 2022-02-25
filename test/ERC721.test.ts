@@ -32,6 +32,14 @@ describe("ERC721", () => {
     it("can return owner of a token", async () => {
         await ERC721.mint(owner.address, 42);
         expect(await ERC721.ownerOf(42)).equal(owner.address);
-
     });
+    it("can transfer tokens", async () => {
+        await ERC721.mint(owner.address, 42);
+        expect(await ERC721.transferFrom(owner.address, operator.address, 42)).to.emit(ERC721, "Transfer");
+        expect(await ERC721.ownerOf(42)).to.equal(operator.address);
+    });
+    it("can 'safe' transfer tokens", async () => {
+        await ERC721.mint(owner.address, 42);
+        expect(await ERC721.safeTransferFrom(owner.address, operator.address, 42)).to.emit(ERC721, "safeTransfer");
+    })
 });
