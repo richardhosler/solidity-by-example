@@ -28,18 +28,29 @@ describe("ERC721", () => {
     });
     it("can mint a token", async () => {
         expect(await ERC721.mint(operator.address, 42)).to.emit(ERC721, "Transfer");
-    })
-    it("can return owner of a token", async () => {
-        await ERC721.mint(owner.address, 42);
-        expect(await ERC721.ownerOf(42)).equal(owner.address);
     });
-    it("can transfer tokens", async () => {
-        await ERC721.mint(owner.address, 42);
-        expect(await ERC721.transferFrom(owner.address, operator.address, 42)).to.emit(ERC721, "Transfer");
-        expect(await ERC721.ownerOf(42)).to.equal(operator.address);
-    });
-    it("can 'safe' transfer tokens", async () => {
-        await ERC721.mint(owner.address, 42);
-        expect(await ERC721.safeTransferFrom(owner.address, operator.address, 42)).to.emit(ERC721, "safeTransfer");
+    describe("token tests", async () => {
+        beforeEach(async () => {
+            await ERC721.mint(owner.address, 42n);
+        })
+        it("can return owner of a token", async () => {
+            expect(await ERC721.ownerOf(42n)).to.equal(owner.address);
+        });
+        it("can set and get an approved address on a token", async () => {
+            expect(await ERC721.approve(operator.address, 42n)).to.emit(ERC721, "Approval");
+            expect(await ERC721.getApproved(42n)).to.equal(operator.address)
+        });
+        it("can transfer tokens", async () => {
+            expect(await ERC721.transferFrom(owner.address, operator.address, 42)).to.emit(ERC721, "Transfer");
+            expect(await ERC721.ownerOf(42)).to.equal(operator.address);
+        });
+        it("can 'safe' transfer tokens", async () => {
+            expect(await ERC721['safeTransferFrom(address,address,uint256)'](owner.address, operator.address, 42n)).to.emit(ERC721, "Transfer");
+        });
+        it("can burn tokens", async () => {
+            expect(await ERC721.burn(42n)).to.emit(ERC721, "Transfer");
+            expect(ERC721.ownerOf(42n)).to.be.reverted;
+        })
     })
+
 });
