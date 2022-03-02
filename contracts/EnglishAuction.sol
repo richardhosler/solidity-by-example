@@ -51,7 +51,7 @@ contract EnglishAuction {
 
         nft.transferFrom(msg.sender, address(this), nftId);
         started = true;
-        endAt = block.timestamp + 7 days;
+        endAt = block.timestamp + 1 seconds;
 
         emit Start();
     }
